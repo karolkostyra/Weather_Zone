@@ -1,4 +1,4 @@
-package com.androstock.myweatherapp;
+package com.example.weatherapp;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -19,15 +19,15 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-//http://api.openweathermap.org/data/2.5/weather?q=Katowice&units=metric&appid=a71fa7369a61aae850d392b6c8d96807
+//http://api.openweathermap.org/data/2.5/weather?q=Katowice&lang=PL&units=metric&appid=a71fa7369a61aae850d392b6c8d96807
 
 
 public class MainActivity extends AppCompatActivity {
 
     TextView selectCity, cityField, detailsField,
-            currentTemperatureField, min_temp, max_temp,
-            humidity_field, pressure_field, wind_field,
-            weatherIcon, updatedField;
+            currentTemperatureField, minTempField, maxTempField,
+            humidityField, pressureField, windField,
+            weatherIcon, dateField;
 
     ProgressBar loader;
     Typeface weatherFont;
@@ -42,19 +42,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         loader = (ProgressBar) findViewById(R.id.loader);
-        selectCity = (TextView) findViewById(R.id.selectCity);
+        selectCity = (TextView) findViewById(R.id.select_city);
         cityField = (TextView) findViewById(R.id.city_field);
-        updatedField = (TextView) findViewById(R.id.updated_field);
+        dateField = (TextView) findViewById(R.id.date_field);
         detailsField = (TextView) findViewById(R.id.details_field);
-        currentTemperatureField = (TextView) findViewById(R.id.current_temperature_field);
-
-        min_temp = (TextView) findViewById(R.id.min_temp);
-        max_temp = (TextView) findViewById(R.id.max_temp);
-
-        wind_field = (TextView) findViewById(R.id.wind_field);
-
-        humidity_field = (TextView) findViewById(R.id.humidity_field);
-        pressure_field = (TextView) findViewById(R.id.pressure_field);
+        currentTemperatureField = (TextView) findViewById(R.id.current_temp_field);
+        minTempField = (TextView) findViewById(R.id.min_temp_field);
+        maxTempField = (TextView) findViewById(R.id.max_temp_field);
+        windField = (TextView) findViewById(R.id.wind_field);
+        humidityField = (TextView) findViewById(R.id.humidity_field);
+        pressureField = (TextView) findViewById(R.id.pressure_field);
         weatherIcon = (TextView) findViewById(R.id.weather_icon);
         weatherFont = Typeface.createFromAsset(getAssets(), "fonts/weathericons-regular-webfont.ttf");
         weatherIcon.setTypeface(weatherFont);
@@ -65,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
-                alertDialog.setTitle("Change City");
+                alertDialog.setTitle("Change city");
                 final EditText input = new EditText(MainActivity.this);
                 input.setText(city);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -113,8 +110,8 @@ public class MainActivity extends AppCompatActivity {
 
         }
         protected String doInBackground(String...args) {
-            String xml = Function.excuteGet("http://api.openweathermap.org/data/2.5/weather?q=" + args[0] +
-                    "&units=metric&appid=" + OPEN_WEATHER_MAP_API);
+            String xml = Function.executeGet("http://api.openweathermap.org/data/2.5/weather?q=" + args[0] +
+                    "&lang=pl&units=metric&appid=" + OPEN_WEATHER_MAP_API);
             return xml;
         }
         @Override
@@ -125,24 +122,22 @@ public class MainActivity extends AppCompatActivity {
                 if (json != null) {
                     JSONObject details = json.getJSONArray("weather").getJSONObject(0);
                     JSONObject main = json.getJSONObject("main");
-
                     JSONObject wind = json.getJSONObject("wind");
 
                     DateFormat df = DateFormat.getDateTimeInstance();
 
                     cityField.setText(json.getString("name").toUpperCase(Locale.getDefault()) + ", " + json.getJSONObject("sys").getString("country"));
                     detailsField.setText(details.getString("description").toUpperCase(Locale.getDefault()));
-                    currentTemperatureField.setText(" - current: " + String.format("%.2f", main.getDouble("temp")) + " °C");
+                    currentTemperatureField.setText(String.format("%.2f", main.getDouble("temp")) + " °C");
 
-                    min_temp.setText(" - min: " + String.format("%.2f", main.getDouble("temp_min")) + " °C");
-                    max_temp.setText(" - max: " + String.format("%.2f", main.getDouble("temp_max")) + " °C");
+                    minTempField.setText(String.format("%.2f", main.getDouble("temp_min")) + " °C");
+                    maxTempField.setText(String.format("%.2f", main.getDouble("temp_max")) + " °C");
 
-                    wind_field.setText("Wind: " + wind.getInt("speed")*3.6 + " km/h");
+                    windField.setText(wind.getInt("speed")*3.6 + " km/h");
 
-
-                    humidity_field.setText("Humidity: " + main.getString("humidity") + "%");
-                    pressure_field.setText("Pressure: " + main.getString("pressure") + " hPa");
-                    updatedField.setText(df.format(new Date(json.getLong("dt") * 1000)));
+                    humidityField.setText(main.getString("humidity") + "%");
+                    pressureField.setText(main.getString("pressure") + " hPa");
+                    dateField.setText(df.format(new Date(json.getLong("dt") * 1000)));
                     weatherIcon.setText(Html.fromHtml(Function.setWeatherIcon(details.getInt("id"),
                             json.getJSONObject("sys").getLong("sunrise") * 1000,
                             json.getJSONObject("sys").getLong("sunset") * 1000 )));
@@ -151,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "Error, Check City", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "     Error!\nCheck City", Toast.LENGTH_SHORT).show();
             }
 
 

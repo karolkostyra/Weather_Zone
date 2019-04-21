@@ -1,4 +1,4 @@
-package com.androstock.myweatherapp;
+package com.example.weatherapp;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -18,16 +18,15 @@ public class Function {
 
 
 
-    public static String excuteGet(String targetURL)
+    public static String executeGet(String targetURL)
     {
         URL url;
         HttpURLConnection connection = null;
         try {
-            //Create connection
             url = new URL(targetURL);
             connection = (HttpURLConnection)url.openConnection();
             connection.setRequestProperty("content-type", "application/json;  charset=utf-8");
-            connection.setRequestProperty("Content-Language", "en-US");
+            connection.setRequestProperty("Content-Language", "pl-PL");
             connection.setUseCaches (false);
             connection.setDoInput(true);
             connection.setDoOutput(false);
@@ -69,17 +68,17 @@ public class Function {
             }
         } else {
             switch(id) {
-                case 2 : icon = "&#xf01e;";
+                case 2 : icon = "&#xf01e;"; //thunderstorm
                     break;
-                case 3 : icon = "&#xf01c;";
+                case 3 : icon = "&#xf01c;"; //drizzle
                     break;
-                case 7 : icon = "&#xf014;";
+                case 5 : icon = "&#xf019;"; //rain
                     break;
-                case 8 : icon = "&#xf013;";
+                case 6 : icon = "&#xf01b;"; //snow
                     break;
-                case 6 : icon = "&#xf01b;";
+                case 7 : icon = "&#xf014;"; //mist
                     break;
-                case 5 : icon = "&#xf019;";
+                case 8 : icon = "&#xf013;"; //cloudy
                     break;
             }
         }
