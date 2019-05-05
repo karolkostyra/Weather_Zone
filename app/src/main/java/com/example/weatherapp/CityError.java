@@ -53,6 +53,19 @@ public class CityError extends AppCompatActivity {
             }
         });
 
+
+
+        Button cancel_button = (Button) findViewById(R.id.cancel_button);
+
+        cancel_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.city = MainActivity.city_last;
+                openMainActivity();
+            }
+        });
+
+
     }
 
     public void openMainActivity(){
