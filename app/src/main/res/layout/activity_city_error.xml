@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_weather_2"
     tools:context=".CityError">
 
     <TextView
@@ -13,6 +14,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="90dp"
         android:text="Error!"
+        android:textColor="#FFFFFF"
         android:textSize="42sp"
         />
 
@@ -26,6 +28,7 @@
         android:layout_marginTop="32dp"
         android:layout_below="@+id/error_alert"
         android:text="This city not exist! Probably you made a mistake by entering the city name."
+        android:textColor="#FFFFFF"
         android:textSize="24sp"
         />
 

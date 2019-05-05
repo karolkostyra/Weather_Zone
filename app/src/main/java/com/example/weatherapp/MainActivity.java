@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar loader;
     Typeface weatherFont;
     public static String city = "Katowice";
-    public static String city_last = city;
+    public static String city_last = "Katowice";
     String OPEN_WEATHER_MAP_API = "a71fa7369a61aae850d392b6c8d96807";
 
 
@@ -59,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
         weatherIcon.setTypeface(weatherFont);
 
         taskLoadUp(city);
-
-        city_last = city;
 
         selectCity.setOnClickListener(new View.OnClickListener() {
             @Override

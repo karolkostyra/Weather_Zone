@@ -16,7 +16,7 @@ public class CityError extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getSupportActionBar().hide();
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_city_error);
 
         Button try_button = (Button) findViewById(R.id.try_again_button);
