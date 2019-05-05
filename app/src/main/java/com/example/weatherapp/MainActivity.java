@@ -2,6 +2,7 @@ package com.example.weatherapp;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     ProgressBar loader;
     Typeface weatherFont;
-    String city = "Katowice";
+    public static String city = "Katowice";
     String OPEN_WEATHER_MAP_API = "a71fa7369a61aae850d392b6c8d96807";
 
 
@@ -146,16 +147,15 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "     Error!\nCheck City", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "     Error!\nCheck City", Toast.LENGTH_SHORT).show();
+                openCityError();
+
             }
-
-
         }
-
-
-
     }
 
-
-
+    public void openCityError(){
+        Intent intent = new Intent(this, CityError.class);
+        startActivity(intent);
+    }
 }
