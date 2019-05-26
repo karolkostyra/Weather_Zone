@@ -1,6 +1,7 @@
 package com.example.weatherapp;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,46 +22,43 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+
+
 //http://api.openweathermap.org/data/2.5/weather?q=Katowice&lang=PL&units=metric&appid=a71fa7369a61aae850d392b6c8d96807
+//Krakow lon: 19.94 lat: 50.06
+//Katowice lon: 18.95 lat:50.21
 
 
-
-//tutaj
 import android.location.LocationListener;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.widget.Button;
-//tutaj
 
 
 public class MainActivity extends AppCompatActivity {
 
-    //tutaj
     private Button saveButton, loadButton, locButton;
-    //private TextView locTextView;
     private LocationManager locManager;
     private LocationListener locListener;
     public static double lat, lon;
-    private TextView getCityName;
-    public String current_city;
-    public String save_city_name = "Warszawa";
-    private boolean switcher;
-    //tutaj
+    public String current_city, save_city_name;
+    private boolean switcher = true;
 
-    TextView selectCity, cityField, detailsField,
+    TextView getCityName, selectCity, cityField, detailsField,
             currentTemperatureField, minTempField, maxTempField,
             humidityField, pressureField, windField,
             weatherIcon, dateField;
@@ -68,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar loader;
     Typeface weatherFont;
     public static String city = "Katowice";
-    public static String city_last = "Katowice";
     String OPEN_WEATHER_MAP_API = "a71fa7369a61aae850d392b6c8d96807";
 
 
@@ -95,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
         weatherIcon.setTypeface(weatherFont);
 
 
-        //tutaj
         final Geocoder geocoder;
         geocoder = new Geocoder(this, Locale.getDefault());
 
@@ -104,9 +100,7 @@ public class MainActivity extends AppCompatActivity {
         loadButton = (Button) findViewById(R.id.load_button);
 
         getCityName = (TextView) findViewById(R.id.cityName);
-
         locManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
 
         locListener = new LocationListener() {
             @Override
@@ -117,18 +111,17 @@ public class MainActivity extends AppCompatActivity {
                 List<Address> addresses = null;
 
                 try {
-                    addresses = geocoder.getFromLocation(lat, lon, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                    addresses = geocoder.getFromLocation(lat, lon, 1);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
                 current_city = addresses.get(0).getLocality();
+
                 if(switcher){
                     taskLoadUp(current_city);
                     switcher = false;
                 }
-                //cityField.setText(current_city);
-                //taskLoadUp(current_city);
             }
 
             @Override
@@ -143,23 +136,27 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onProviderDisabled(String s) {
-
                 Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(i);
             }
         };
 
         configure_button();
-        locButton.performClick();
-        //tutaj
+        if(CityError.change) {
+            taskLoadUp(city);
+        }
+        else{
+            locButton.performClick();
+
+        }
 
 
 
-        //tutaj
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 save_city_name = cityField.getText().toString();
+                writeFile(save_city_name);
             }
         });
 
@@ -167,14 +164,11 @@ public class MainActivity extends AppCompatActivity {
         loadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                readFile();
                 taskLoadUp(save_city_name);
             }
         });
-        //tutaj
 
-
-
-        //taskLoadUp(save_city_name);
 
 
         selectCity.setOnClickListener(new View.OnClickListener() {
@@ -210,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //tutaj
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode){
@@ -233,6 +227,7 @@ public class MainActivity extends AppCompatActivity {
         }
         // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
         locButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("MissingPermission")
             @Override
             public void onClick(View view) {
                 //noinspection MissingPermission
@@ -241,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    //tutaj
+
 
 
 
@@ -255,22 +250,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     class DownloadWeather extends AsyncTask < String, Void, String > {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             loader.setVisibility(View.VISIBLE);
-
         }
+
         protected String doInBackground(String...args) {
             String xml = Function.executeGet("http://api.openweathermap.org/data/2.5/weather?q=" + args[0] +
                     "&units=metric&appid=" + OPEN_WEATHER_MAP_API);
             return xml;
         }
+
         @Override
         protected void onPostExecute(String xml) {
-
             try {
                 JSONObject json = new JSONObject(xml);
                 if (json != null) {
@@ -300,9 +294,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             } catch (JSONException e) {
-                //Toast.makeText(getApplicationContext(), "     Error!\nCheck City", Toast.LENGTH_SHORT).show();
                 openCityError();
-
             }
         }
     }
@@ -310,5 +302,42 @@ public class MainActivity extends AppCompatActivity {
     public void openCityError(){
         Intent intent = new Intent(this, CityError.class);
         startActivity(intent);
+    }
+
+    public void writeFile(String txt){
+        try{
+            FileOutputStream fos = openFileOutput("city.txt", MODE_PRIVATE);
+            fos.write(txt.getBytes());
+            fos.close();
+            Toast.makeText(getApplicationContext(), "Text saved", Toast.LENGTH_SHORT).show();
+        }
+        catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void readFile(){
+        try{
+            FileInputStream fis = openFileInput("city.txt");
+            InputStreamReader isr = new InputStreamReader(fis);
+
+            BufferedReader br = new BufferedReader(isr);
+            StringBuffer sb = new StringBuffer();
+
+            String lines;
+            while((lines = br.readLine()) != null){
+                sb.append(lines);
+            }
+            save_city_name = sb.toString();
+        }
+        catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }

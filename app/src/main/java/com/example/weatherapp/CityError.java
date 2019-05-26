@@ -9,9 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+
 
 public class CityError extends AppCompatActivity {
+
+    public static boolean change;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +39,8 @@ public class CityError extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 MainActivity.city = input.getText().toString();
+                                change = true;
                                 openMainActivity();
-                                //String city_change = input.getText().toString();
-                                //MainActivity.taskLoadUp(city_change);
-                                //Toast.makeText(getApplicationContext(), "     TEST", Toast.LENGTH_SHORT).show();
                             }
                         });
                 alertDialog.setNegativeButton("Cancel",
@@ -60,12 +60,10 @@ public class CityError extends AppCompatActivity {
         cancel_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.city = MainActivity.city_last;
+                change = false;
                 openMainActivity();
             }
         });
-
-
     }
 
     public void openMainActivity(){

@@ -218,29 +218,6 @@
 
 
 
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        android:id="@+id/save_button"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        />
-
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Load favourite"
-        android:id="@+id/load_button"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerHorizontal="true"
-        />
-
-
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -251,6 +228,23 @@
         android:layout_centerHorizontal="true"
         />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:id="@+id/save_button"
+        android:layout_toRightOf="@+id/loc_button"
+        android:layout_centerHorizontal="true"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Load favourite"
+        android:id="@+id/load_button"
+        android:layout_toRightOf="@+id/save_button"
+        android:layout_centerHorizontal="true"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -260,4 +254,5 @@
         android:textSize="24sp"
         android:layout_centerHorizontal="true"
         />
+
 </RelativeLayout>

@@ -84,6 +84,4 @@ public class Function {
         }
         return icon;
     }
-
-
 }
