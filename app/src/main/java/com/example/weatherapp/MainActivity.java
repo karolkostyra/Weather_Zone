@@ -34,19 +34,16 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-
-
-//http://api.openweathermap.org/data/2.5/weather?q=Katowice&lang=PL&units=metric&appid=a71fa7369a61aae850d392b6c8d96807
-//Krakow lon: 19.94 lat: 50.06
-//Katowice lon: 18.95 lat:50.21
-
-
 import android.location.LocationListener;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.widget.Button;
+
+
+//http://api.openweathermap.org/data/2.5/weather?q=Katowice&lang=PL&units=metric&appid=a71fa7369a61aae850d392b6c8d96807
+//Krakow lon: 19.94 lat: 50.06
+//Katowice lon: 18.95 lat:50.21
 
 
 public class MainActivity extends AppCompatActivity {
@@ -98,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
         locButton = (Button) findViewById(R.id.loc_button);
         saveButton = (Button) findViewById(R.id.save_button);
         loadButton = (Button) findViewById(R.id.load_button);
-
         getCityName = (TextView) findViewById(R.id.cityName);
         locManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -147,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             locButton.performClick();
-
         }
 
 
@@ -304,12 +299,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
     public void writeFile(String txt){
         try{
             FileOutputStream fos = openFileOutput("city.txt", MODE_PRIVATE);
             fos.write(txt.getBytes());
             fos.close();
-            Toast.makeText(getApplicationContext(), "Text saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "City name - saved", Toast.LENGTH_SHORT).show();
         }
         catch (FileNotFoundException e){
             e.printStackTrace();

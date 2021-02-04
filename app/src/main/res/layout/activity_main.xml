@@ -2,8 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="16dp"
+    android:paddingTop="10dp"
     android:background="@drawable/bg_weather_2"
-    android:padding="20dp"
     >
 
 
@@ -48,7 +51,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/select_city"
         android:textColor="#FFFFFF"
-        android:textSize="130sp"
+        android:textSize="115sp"
         />
 
 
