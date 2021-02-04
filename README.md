@@ -7,7 +7,7 @@ Weather application created with android studio (2019)
 ## Screenshots
 
 <p align="center">
-Main screen and Error screen
+Main screen and wrong city error
 </br>
 <img src=https://user-images.githubusercontent.com/50884054/106898955-175e2a80-66f5-11eb-9af9-a2bbde1024cd.jpg height="600" width="300">  <img src=https://user-images.githubusercontent.com/50884054/106899668-ed593800-66f5-11eb-8f7e-ddf310f57429.jpg height="600" width="300">
 </p>
