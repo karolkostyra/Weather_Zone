@@ -3,6 +3,7 @@ Weather application created with android studio (2019)
 
 
 </br>
+
 ## Screenshots
 
 <p align="center">
